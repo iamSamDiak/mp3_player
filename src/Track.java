@@ -1,3 +1,4 @@
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,8 +15,8 @@ public class Track {
 	private static Timer timer = new Timer("Timer");
     
 	//constructor
-    public Track(String media) {
-    	this.media = new Media(media);
+    public Track(String string) {
+    	this.media = new Media(string);
         this.mediaPlayer = new MediaPlayer(this.media);
         this.timeDuration = this.mediaPlayer.getTotalDuration();
         this.currentTime = 0;

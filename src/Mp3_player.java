@@ -39,14 +39,17 @@ public class Mp3_player extends Application {
 	private static boolean pause = false;
 	private static boolean stop = true;
 	
-	Track mediaPlayer = new Track("file:/C:/Users/yasamy/Documents/football/nakamura_1/music/backwhen-pelican.mp3");
-	Track mediaPlayer_1 = new Track("file:/C:/Users/yasamy/Documents/football/nakamura_1/music/Dreamcatcher.mp3");
-	Track mediaPlayer_2 = new Track("file:/C:/Users/yasamy/Documents/football/nakamura_1/music/Hypnosis.mp3");
-	Track mediaPlayer_3 = new Track("file:/C:/Users/yasamy/Documents/football/nakamura_1/music/Texture_Bath.mp3");
 	Tracklist tracklist = new Tracklist();
 	
 	@Override 
    	public void start(Stage stage) throws FileNotFoundException {
+		
+		Class<?> clazz = Mp3_player.class;
+		
+		Track mediaPlayer = new Track("file:/C:/Users/yasamy/eclipse-workspace/mp3_player/src/tracks/backwhen-pelican.mp3");
+		Track mediaPlayer_1 = new Track("file:/C:/Users/yasamy/eclipse-workspace/mp3_player/src/tracks/Dreamcatcher.mp3");
+		Track mediaPlayer_2 = new Track("file:/C:/Users/yasamy/eclipse-workspace/mp3_player/src/tracks/Hypnosis.mp3");
+		Track mediaPlayer_3 = new Track("file:/C:/Users/yasamy/eclipse-workspace/mp3_player/src/tracks/Texture_Bath.mp3");
 		
 		this.tracklist.addTrack(mediaPlayer);
 		this.tracklist.addTrack(mediaPlayer_1);
@@ -54,8 +57,6 @@ public class Mp3_player extends Application {
 		this.tracklist.addTrack(mediaPlayer_3);
 		this.tracklist.listAllTracks();
 		System.out.println(this.tracklist.getTracklist().get(2));
-		
-		Class<?> clazz = Mp3_player.class;
 		 
 		InputStream inputPause= clazz.getResourceAsStream("/icons/pause.png");
 		InputStream inputPlay = clazz.getResourceAsStream("/icons/play.png");
