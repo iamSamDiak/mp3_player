@@ -1,4 +1,6 @@
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,7 +14,7 @@ public class Track {
 	private MediaPlayer mediaPlayer;
 	private Duration timeDuration;
 	private double currentTime;
-	private static Timer timer = new Timer("Timer");
+	private static String STATUS;
     
 	//constructor
     public Track(String string) {
@@ -26,60 +28,32 @@ public class Track {
     	return this.media.getDuration().toSeconds();
     }
     
+    public Duration getCurrentSeconds() {
+    	return this.mediaPlayer.getCurrentTime();
+    }
+    
     public String getMediaTitle() {
-    	return (String) this.media.getMetadata().get("title");
-    }
-    
-    public void onPlay() {
-		if (Status.UNKNOWN != null || Status.PAUSED != null || Status.STOPPED != null) {
-    		this.mediaPlayer.setStartTime(Duration.seconds(245));
-			this.mediaPlayer.play();
-    	}
-    	this.mediaPlayer.setOnPlaying(new Runnable() {
-    		  public void run() {
-    			  timer.schedule(secondsPlaying(), 0, 100L);
-    			  System.out.println("playing");
-    		  }}
-    	);
-    }
-    
-    public void onPause() {
-    	if (Status.PLAYING != null) {
-    		this.mediaPlayer.pause();
-    	}
-    	this.mediaPlayer.setOnPaused(new Runnable() {
-    		public void run() {
-    			//status and timeStatus are both Labels with default text()
-    			//mediaLocation is a default string created from a File object
-    			//status.setText("Playing: " + mediaLocation);
-    			//timeStatus.setText("Time: " + mediaPlayer.getCurrentTime());
-    			System.out.println("pause");
-    		}
-    	});
-    }
-    
-    public void onStop() {
-    	if (Status.PLAYING != null || Status.PAUSED != null) {
-    		this.mediaPlayer.stop();
-    	}
-		this.getStatus();
-    	this.mediaPlayer.setOnStopped(new Runnable() {
-    		public void run() {
-  			  System.out.println("stop");
-    		}
-    	});
-    }
-    
-    public void ready() {
-    	this.mediaPlayer.setOnReady(new Runnable() {
-    		public void run() {
-    			//status and timeStatus are both Labels with default text()
-    			//mediaLocation is a default string created from a File object
-    			//status.setText("Playing: " + mediaLocation);
-    			//timeStatus.setText("Time: " + mediaPlayer.getCurrentTime());
-    			System.out.println("ready");
-    		}
-    	});
+    	String source = this.media.getSource();
+    	 
+        // getBytes() method to convert string
+        // into bytes[].
+        byte[] strAsByteArray = source.getBytes();
+ 
+        byte[] result = new byte[strAsByteArray.length];
+        
+        String s = new String(strAsByteArray, StandardCharsets.UTF_8);
+        
+        int i = 0;
+        // Store result in reverse order into the
+        // result byte[]
+        while (s.charAt(strAsByteArray.length - i - 1) != '/'){
+            result[strAsByteArray.length - i - 1] = strAsByteArray[strAsByteArray.length - i - 1];
+            i++;
+        }
+ 
+        String r = new String(result);
+        
+        return r.substring(strAsByteArray.length - i);
     }
     
     public Status getStatus() {
@@ -142,6 +116,14 @@ public class Track {
 
 	public void setCurrentTime(double currentTime) {
 		this.currentTime = currentTime;
+	}
+
+	public static String getSTATUS() {
+		return STATUS;
+	}
+
+	public static void setSTATUS(String sTATUS) {
+		STATUS = sTATUS;
 	}
     
 }

@@ -1,35 +1,47 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import javax.json.*;
+
+import javafx.scene.media.MediaPlayer;
 
 public class Tracklist {
-	private ArrayList<Track> tracklist;
+	private ArrayList<Track> Tracklist;
 	
 	public Tracklist() {
-		this.tracklist = new ArrayList<Track>();
+		Tracklist = new ArrayList<Track>();
 	}
 	
-	public void addTrack(Track track) {
-		this.tracklist.add(track);
+	public void addTrack(Track Track) {
+		Tracklist.add(Track);
 	}
 	
-	public void listAllTracks() {
-		Iterator<Track> iter = this.tracklist.iterator();
-		  
-        // Displaying the values
-        // after iterating through the list
-        System.out.println("\nThe iterator values"
-                           + " of list are: ");
-        while (iter.hasNext()) {
-            System.out.print(iter.next() + " ");
+	public ArrayList<String> getTrackTitles() {
+		
+		ArrayList<String> TracklistTitles = new ArrayList<String>();
+        for (int i = 0; i < Tracklist.size(); i++) {
+        	TracklistTitles.add(Tracklist.get(i).getMediaTitle());
         }
+        
+        return TracklistTitles;
+	}
+	
+	public ArrayList<MediaPlayer> getTrackMedias() {
+		
+		ArrayList<MediaPlayer> TracklistMedias = new ArrayList<MediaPlayer>();
+		for (int i = 0; i < Tracklist.size(); i++) {
+			TracklistMedias.add(Tracklist.get(i).getMediaPlayer());
+		}
+		
+		return TracklistMedias;
 	}
 
 	public ArrayList<Track> getTracklist() {
-		return tracklist;
+		return Tracklist;
 	}
 
-	public void setTracklist(ArrayList<Track> tracklist) {
-		this.tracklist = tracklist;
+	public void setTracklist(ArrayList<Track> Tracklist) {
+		Tracklist = this.Tracklist;
 	}
 	
 }
