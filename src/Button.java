@@ -2,10 +2,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Button {
@@ -14,13 +17,22 @@ public class Button {
 	private InputStream input;
 	private Image inputImage;
 	private ImageView viewImage;
+	private Text text;
+	private Color color;
 	
+	//imageView
 	public Button(String input) {
 		this.input = resource.getResourceAsStream(input);
 		this.inputImage = new Image(this.input);
 		this.viewImage = new ImageView(this.inputImage);
 	}
 	
+	//text
+	public Button(String title, Color color) {
+		this.text = new Text(title);
+		this.text.setFill(color);
+	}
+
 	public EventHandler<MouseEvent> play(ArrayList<MediaPlayer> mediaplayer) {
 		EventHandler<MouseEvent> played = new EventHandler<MouseEvent>() {
 	         @Override 
@@ -40,6 +52,25 @@ public class Button {
 		return played;
 	}
 	
+	public EventHandler<MouseEvent> playThisTrack(ArrayList<MediaPlayer> mediaplayer) {
+		EventHandler<MouseEvent> played = new EventHandler<MouseEvent>() {
+			@Override 
+			public void handle(MouseEvent e) {
+				mediaplayer.get(Gui.getTrackNum()).play();
+				Track.setSTATUS("PLAYING");
+				System.out.println("play!");
+				//set slider here, because...reasons..
+				Double m = Gui.setTotalDuration(mediaplayer);
+				Gui.setSliderMax(m);
+				//
+				Gui.onPlay();
+				Gui.onResume();
+			}
+		};
+		this.getText().addEventFilter(MouseEvent.MOUSE_CLICKED, played);
+		return played;
+	}
+	
 	public EventHandler<MouseEvent> stop(ArrayList<MediaPlayer> mediaplayer) {
 		EventHandler<MouseEvent> stopped = new EventHandler<MouseEvent>() {
 			@Override 
@@ -56,7 +87,7 @@ public class Button {
 		return stopped;
 	}
 	
-	public EventHandler<MouseEvent> pause(ArrayList<MediaPlayer> mediaplayer, int TrackNum) {
+	public EventHandler<MouseEvent> pause(ArrayList<MediaPlayer> mediaplayer) {
 		EventHandler<MouseEvent> paused = new EventHandler<MouseEvent>() {
 			@Override 
 			public void handle(MouseEvent e) {
@@ -72,7 +103,7 @@ public class Button {
 		return paused;
 	}
 	
-	public EventHandler<MouseEvent> rewind(ArrayList<MediaPlayer> mediaplayer, int TrackNum) {
+	public EventHandler<MouseEvent> rewind(ArrayList<MediaPlayer> mediaplayer) {
 		EventHandler<MouseEvent> rewinded = new EventHandler<MouseEvent>() {
 			@Override 
 			public void handle(MouseEvent e) {
@@ -114,6 +145,7 @@ public class Button {
 					Track.setSTATUS("STOPPED");
 					Gui.onStop();
 					Gui.onPause();
+					//Gui.trackPlaying(Gui.getTrackNum());
 				} else {
 					mediaplayer.get(Gui.getTrackNum()).stop();
 					Gui.addTrackNum(); 
@@ -122,6 +154,7 @@ public class Button {
 					Gui.onResume();
 					Track.setSTATUS("PLAYING");
 					System.out.println("fast forward!");
+					//Gui.trackPlaying(Gui.getTrackNum());
 				}
 			}
 		};
@@ -161,6 +194,20 @@ public class Button {
 		this.viewImage = viewImage;
 	}
 	
-	
+	public Text getText() {
+		return text;
+	}
+
+	public void setText(Text text) {
+		this.text = text;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
 	
 }

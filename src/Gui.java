@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
@@ -35,6 +36,7 @@ public class Gui{
 	private static ImageView pause_imageview;
 	private static ImageView play_imageview;
 	private static ImageView stop_imageview;
+	private static GridPane Track_titles;
 	//TrackNum is public to be use in any classes !
 	private static int TrackNum = 0;
 	
@@ -81,13 +83,14 @@ public class Gui{
 	
 	public GridPane TrackTitles() {
 		//listTracks
-		GridPane Track_titles = new GridPane();
+		Track_titles = new GridPane();
 		Track_titles.setMinSize(0, 0);
 		Track_titles.setPadding(new Insets(10, 10, 10, 10));
 		Track_titles.setAlignment(Pos.CENTER);
 		for (int i = 0; i < Tracklist.getTracklist().size(); i++) {
-			Text text = new Text(Tracklist.getTrackTitles().get(i));
-			Track_titles.add(text, 0, i);
+			Button text = new Button(Tracklist.getTrackTitles().get(i), Color.BLACK);
+			text.getText().addEventFilter(MouseEvent.MOUSE_CLICKED, text.playThisTrack(track));
+			Track_titles.add(text.getText(), 0, i);
 		}
 		//
 		return Track_titles;
@@ -124,7 +127,7 @@ public class Gui{
 		pause_imageview.setFitHeight(50); 
 		pause_imageview.setFitWidth(50);
 		pause_imageview.setVisible(false);
-		pause_imageview.addEventFilter(MouseEvent.MOUSE_CLICKED, pause.pause(track, TrackNum));
+		pause_imageview.addEventFilter(MouseEvent.MOUSE_CLICKED, pause.pause(track));
 		//
 		return pause_imageview;
 	}
@@ -155,7 +158,7 @@ public class Gui{
 		rewind_imageview.setFitHeight(50); 
 		rewind_imageview.setFitWidth(50); 
 		rewind_imageview.setPreserveRatio(true);
-		rewind_imageview.addEventFilter(MouseEvent.MOUSE_CLICKED, rewind.rewind(track, TrackNum));
+		rewind_imageview.addEventFilter(MouseEvent.MOUSE_CLICKED, rewind.rewind(track));
 		//
 		return rewind_imageview;
 	}
@@ -204,7 +207,6 @@ public class Gui{
 				track.get(getTrackNum()).play();
 			}
 			SliderDragged = false;
-			System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuu");
         });
 		slider.setOnMousePressed(event -> {
         	Gui.slider.setValue(event.getX());
@@ -217,6 +219,7 @@ public class Gui{
 	public void givenUsingTimer_whenSchedulingTaskOnce_thenCorrect() {
 	    TimerTask task = new TimerTask(){
 	        public void run() {
+	        	trackPlaying(getTrackNum());
 	        	Duration currentTime = track.get(getTrackNum()).getCurrentTime();
 	        	Duration totalTime = track.get(getTrackNum()).getTotalDuration().add(currentTime);
 	        	if (totalTime.compareTo(currentTime) <= 0) {
@@ -238,6 +241,14 @@ public class Gui{
 	    
 	    long delay = 1000L;
 	    timer.scheduleAtFixedRate(task, 0, 1000);
+	}
+	
+	public static void trackPlaying(int TrackNum) {
+		for (int i = 0; i < Track_titles.getChildren().size(); i++) {
+			((Shape) Track_titles.getChildren().get(i)).setFill(Color.BLACK);
+		}
+		((Shape) Track_titles.getChildren().get(TrackNum)).setFill(Color.BLUE);
+		System.out.println("uuuuuuuuuuuuuuuuuuuuu");
 	}
 	
 	public static Double setTotalDuration(ArrayList<MediaPlayer> mediaplayer) {
