@@ -1,7 +1,7 @@
 ### Work in progress
 
-Je développe un lecteur mp3 classique sur Java.
-Les commandes basiques sont implémentées : play, pause, rebobiner, avancer...
-Il me reste plus qu'a créer les méthodes pour importer de la musique.
+I'm currently developing a basic audio player on Java.
+It does has the basic functionalities such as : play, pause, playback, advance...
+Just need to create an "import" system
 
-Vous pouvez cloner le projet pour le tester. Des musiques ont déja été mises dans _lib/_
+You can clone the project to test it. Tracks are already added inside folder _lib/_
